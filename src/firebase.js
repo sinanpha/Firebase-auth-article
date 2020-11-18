@@ -29,7 +29,6 @@ export const generateUserDocument = async (user, additionalData) => {
 
   const userRef = firestore.doc(`users/${user.uid}`);  
   const snapshot = await userRef.get();  // get lần đầu k có nên exists false , nên tạo doc lần đầu
-  console.log(snapshot) ;  
 
   if (!snapshot.exists) {   
     // đăng ký lần đầu exists trả về false , lần sau đã có dữ liệu trả về true
