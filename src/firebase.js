@@ -13,29 +13,30 @@ const firebaseConfig = {
   appId: "1:61589958525:web:a26559d44d08c003d2e614",
   measurementId: "G-1MVLMTY1J6"
 };
-// Initialize Firebase
+// Initialize Firebase khởi tạo
 firebase.initializeApp(firebaseConfig);
 
-export const auth = firebase.auth();
-export const firestore = firebase.firestore();
+export const auth = firebase.auth();   //tạo auth
+export const firestore = firebase.firestore();   // tạo firestore
 
-const provider = new firebase.auth.GoogleAuthProvider();
+const provider = new firebase.auth.GoogleAuthProvider(); // tạo provider
 export const signInWithGoogle = () => {
   auth.signInWithPopup(provider);
-};
+};  // đăng nhập vs google
 
 export const generateUserDocument = async (user, additionalData) => {
   if (!user) return ;
 
-  const userRef = firestore.doc(`users/${user.uid}`);
-  const snapshot = await userRef.get();
-  console.log(snapshot) ;
+  const userRef = firestore.doc(`users/${user.uid}`);  
+  const snapshot = await userRef.get();  // get lần đầu k có nên exists false , nên tạo doc lần đầu
+  console.log(snapshot) ;  
 
-  if (!snapshot.exists) {
+  if (!snapshot.exists) {   
+    // đăng ký lần đầu exists trả về false , lần sau đã có dữ liệu trả về true
     const { email, displayName, photoURL } = user;
   
     try {
-      await userRef.set({
+      await userRef.set({  // set để add vào collection : firebase.doc.set()
         displayName,
         email,
         photoURL,
@@ -54,7 +55,7 @@ const getUserDocument = async uid => {
     const userDocument = await firestore.doc(`users/${uid}`).get();
     return {
       uid,
-      ...userDocument.data()
+      ...userDocument.data()   // firestore.doc.get.data() : lấy dữ liệu
     };
   } catch (error) {
     console.error("Error fetching user", error);
